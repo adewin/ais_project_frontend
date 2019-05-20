@@ -3,12 +3,14 @@
     <baidu-map class="map" 
         :zoom="map.zoom" 
         :min-zoom="map.min_zoom" :max-zoom="map.max_zoom" 
-        :scroll-wheel-zoom="map.scroll" center="大连">
-        <bm-navigation anchor="BMAP_ANCHOR_TOP_LEFT"></bm-navigation>
+        :scroll-wheel-zoom="map.scroll" center="大连"
+        @zoomend="zoomEvent">
+        <!-- 缩放控件 -->
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_LEFT" :showZoomInfo="navigation.showZoomInfo" :enableGeolocation="navigation.enableGeolocation"></bm-navigation>
         <!-- 折线组件 -->
         <bm-polyline class="bm-line" :path="trajectory.polylinePath" stroke-color="blue" 
             stroke-style="dashed"
-            :stroke-opacity="0.5" 
+            :stroke-opacity="0.5"
             :stroke-weight="2"
             :editing="false"
             :clicking='true'
@@ -23,10 +25,15 @@
         </bm-point-collection> -->
 
         <!-- 标签组件 -->
-        <bm-label :content="label.content"
+        <!-- <bm-label :content="label.content"
             :position="label.position"
             :labelStyle="{color: 'red', fontSize : '24px'}" title="Hover me"
         >
+        </bm-label> -->
+        <bm-label v-for="(item, index) in label.position" :key="'1'+index"
+        :position="item"
+        :labelStyle="{color: 'red', fontSize : '10px'}"
+        content='test'>
 
         </bm-label>
         <!-- 信息窗口组件 -->
@@ -77,6 +84,12 @@
 export default {
     data() {
         return {
+            // 缩放控件
+            navigation: {
+                anchor: 'BMAP_ANCHOR_TOP_LEFT',
+                showZoomInfo: true,
+                enableGeolocation: true
+            },
             // 地图属性
             map: {
                 center: {lng: 0, lat: 0},
@@ -94,7 +107,8 @@ export default {
                 lng: '',
                 lat: '',
                 mmsi: '',
-                time: ''
+                time: '',
+                status: ''
             },
             // 折线属性
             trajectory: {
@@ -104,7 +118,7 @@ export default {
             // 标签属性
             label: {
                 content: 'test',
-                position: {lng: 116.404, lat: 39.915}
+                position: {lng: '112.368292', lat: '21.369393'}
             },
             value1: '',
             color: 'yellow',
@@ -137,9 +151,10 @@ export default {
             console.log(this.trajectory.polylinePath)
             let mmsi = this.infoWindow.mmsi
             this.$axios.get('http://localhost:5000/api/get_data_by_mmsi/' + mmsi).then(res => {
-                this.trajectory.polylinePath = null
+                // this.trajectory.polylinePath = null
                 this.trajectory.data = res.data
                 this.trajectory.polylinePath = res.data[0].lnglat
+                this.label.position = res.data[0].lnglat
             })
         },
         polylineEvent(e){
@@ -159,8 +174,12 @@ export default {
                     this.infoWindow.lng = i.lon
                     this.infoWindow.lat = i.lat
                     this.infoWindow.time = i.updatetime
+                    this.status = i.navastatus
                 }
             })
+        },
+        zoomEvent(b){
+            console.log(b.point)
         },
         infoWindowClose (e) {
             this.infoWindow.show = false

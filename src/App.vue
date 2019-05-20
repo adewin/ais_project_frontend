@@ -50,7 +50,7 @@
                         </template>
                         <el-menu-item-group>
                             <router-link to="/cluster_analysis"><el-menu-item index="3-1">聚类分析</el-menu-item></router-link>
-                            <el-menu-item index="3-2">选项3-2</el-menu-item>
+                            <router-link to="/point_analysis"><el-menu-item index="3-2">点分析</el-menu-item></router-link>
                         </el-menu-item-group>
 
                     </el-submenu>
