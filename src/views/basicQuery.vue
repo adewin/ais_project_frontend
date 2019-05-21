@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import * as util from '../util'
 export default {
     data() {
         return {
@@ -129,13 +130,7 @@ export default {
     },
     methods:{
         getData(){
-            let year = this.value1.getFullYear()
-            let month = (this.value1.getMonth() +1 >= 10)? (this.value1.getMonth() + 1):('0'+(this.value1.getMonth() + 1))
-            let date = (this.value1.getDate() >= 10) ? (this.value1.getDate()):('0'+this.value1.getDate())
-            let hour = (this.value1.getHours() >= 10) ? (this.value1.getHours()):('0'+this.value1.getHours())
-            let min = (this.value1.getMinutes() >= 10) ? (this.value1.getMinutes()) : ('0'+this.value1.getMinutes())
-            let sec = (this.value1.getSeconds() >= 10) ? (this.value1.getSeconds()) : ('0'+ this.value1.getSeconds())
-            let time = year+'-'+month+'-'+date+' '+ hour+':'+min
+            let time = util.dateFormat(this.value1)
             console.log(time)
 
             this.$axios.get('http://localhost:5000/api/get_data_by_inserttime/' + time).then(res => {
