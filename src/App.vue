@@ -3,11 +3,11 @@
     <el-container>
         <el-header>
             <el-row>
-                <el-col :span="8"><div class="grid-content bg-purple">logo部分</div></el-col>
-                <el-col :span="4"><div class="grid-content bg-purple">导航一</div></el-col>
+                <el-col :span="8"><div class="grid-content bg-purple"> AIS数据分析系统</div></el-col>
+                <!-- <el-col :span="4"><div class="grid-content bg-purple">导航一</div></el-col>
                 <el-col :span="4"><div class="grid-content bg-purple-light">导航二</div></el-col>
                 <el-col :span="4"><div class="grid-content bg-purple">导航三</div></el-col>
-                <el-col :span="4"><div class="grid-content bg-purple-light">导航四</div></el-col>
+                <el-col :span="4"><div class="grid-content bg-purple-light">导航四</div></el-col> -->
             </el-row>
         </el-header>
         <el-container>
@@ -33,20 +33,13 @@
                         </template>
                         <el-menu-item-group>
                             <router-link to="basic_query"><el-menu-item index="2-1">基础查询</el-menu-item></router-link>
-                            <el-menu-item index="2-2">选项2</el-menu-item> 
+                            <router-link to="statistic"><el-menu-item index="2-2">轨迹查询</el-menu-item></router-link> 
                         </el-menu-item-group>
-                        <el-menu-item-group title="分组2">
-                            <el-menu-item index="2-3">选项3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-submenu index="2-4">
-                            <template slot="title">选项4</template>
-                            <el-menu-item index="2-4-1">选项1</el-menu-item>
-                        </el-submenu>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">
                             <i class="el-icon-document"></i>
-                            <span>分析</span>
+                            <span>聚类分析</span>
                         </template>
                         <el-menu-item-group>
                             <router-link to="/cluster_analysis"><el-menu-item index="3-1">聚类分析</el-menu-item></router-link>
@@ -57,7 +50,7 @@
                     <el-submenu index="4">
                         <template slot="title">
                             <i class="el-icon-document"></i>
-                            <span>地图操作</span>
+                            <span>统计和可视化</span>
                         </template>
                         <el-menu-item-group>
                             <router-link to="/option1"><el-menu-item index="4-1">地图测试</el-menu-item></router-link>

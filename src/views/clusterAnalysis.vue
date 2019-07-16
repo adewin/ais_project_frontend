@@ -35,7 +35,10 @@
                     <el-button @click="getDataByRectangle">获取数据</el-button>
                     <el-button @click="clearData1">清除数据</el-button>
                 </el-collapse-item>
-                <el-collapse-item title="DBSCAN聚类" name="2">
+                <el-collapse-item title="K-Dist图" name="2">
+                    <el-button>生成K-Dist图</el-button>
+                </el-collapse-item>
+                <el-collapse-item title="DBSCAN聚类" name="3">
                     搜索半径（m）：<el-input placeholder="搜索半径" v-model="eps" clearable=""></el-input>
                     <br>
                     最小个数：<el-input placeholder="最小个数" v-model="minpts" clearable=""></el-input>

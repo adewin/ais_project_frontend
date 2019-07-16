@@ -69,7 +69,7 @@ export default {
             map: {
                 center: {lng: 0, lat: 0},
                 zoom: 6,
-                min_zoom: 1,
+                min_zoom: 2,
                 max_zoom: 15,
                 scroll: true,
                 map_style: {
@@ -135,6 +135,7 @@ export default {
         },
         clearLayers(){
             this.heatmap.data = []
+            this.clusterer.markers = []
         },
         // 双击地图获得经纬度坐标
         getPointByClick(e){
@@ -208,7 +209,7 @@ export default {
     z-index: 999;
     position: absolute;
     bottom: 10px;
-    right: 14%;
+    right: 11%;
 }
 .el-icon-circle-close {
     font-size: xx-large;

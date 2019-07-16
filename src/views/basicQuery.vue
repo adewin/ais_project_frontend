@@ -3,8 +3,7 @@
     <baidu-map class="map" 
         :zoom="map.zoom" 
         :min-zoom="map.min_zoom" :max-zoom="map.max_zoom" 
-        :scroll-wheel-zoom="map.scroll" center="大连"
-        @zoomend="zoomEvent">
+        :scroll-wheel-zoom="map.scroll" center="大连">
         <!-- 缩放控件 -->
         <bm-navigation anchor="BMAP_ANCHOR_TOP_LEFT" :showZoomInfo="navigation.showZoomInfo" :enableGeolocation="navigation.enableGeolocation"></bm-navigation>
         <!-- 折线组件 -->
@@ -13,10 +12,16 @@
             :stroke-opacity="0.5"
             :stroke-weight="2"
             :editing="false"
-            :clicking='true'
-            @mouseup="polylineEvent">
+            :clicking='true'>
         </bm-polyline>
 
+        <!-- 航线中 点 组件-->
+        <bm-marker v-for="(item, index) in marker.lnglat" :key="'2'+index" 
+            :position="item"
+            @click="getMarkerInfo"
+            :icon="{url: '../../static/poi.png', size: {width: 20, height: 20}}">
+            <!-- <bm-info-window :position="item" :show="marker.markerInfo.show">我爱北京天安门</bm-info-window> -->
+        </bm-marker>
         <!-- 海量点组件--显示轨迹点 -->
         <!-- <bm-point-collection class="trajectory-points"
             v-for="(item, index) in trajectory.data" :key="'q'+index"
@@ -25,17 +30,12 @@
         </bm-point-collection> -->
 
         <!-- 标签组件 -->
-        <!-- <bm-label :content="label.content"
-            :position="label.position"
-            :labelStyle="{color: 'red', fontSize : '24px'}" title="Hover me"
-        >
-        </bm-label> -->
-        <bm-label v-for="(item, index) in label.position" :key="'1'+index"
+        <!-- <bm-label v-for="(item, index) in label.position" :key="'1'+index"
         :position="item"
-        :labelStyle="{color: 'red', fontSize : '10px'}"
+        :labelStyle="{fontSize : '8px'}"
         content='test'>
 
-        </bm-label>
+        </bm-label> -->
         <!-- 信息窗口组件 -->
         <bm-info-window :position="infoWindow.lnglat" title="详细信息" 
             :show="infoWindow.show" 
@@ -47,6 +47,7 @@
             <p>时间: {{infoWindow.time}}</p>
 
             <br>
+            <el-button size="mini" round>显示船舶详细信息</el-button>
             <el-button size="mini" round @click="getDataByMMSI">显示船舶一日内轨迹</el-button>
         </bm-info-window>
         <!-- 海量点组件 -->
@@ -70,6 +71,36 @@
                 </el-date-picker>
                 <el-button @click="getData">获取数据</el-button>
             </div>
+            <div class="">
+                <p>船舶详细信息</p>
+
+                <p>船舶轨迹详细信息</p>
+                <el-table :data="trajectory.data" style="width:100%" height="250">
+                    <el-table-column
+                        prop="updatetime"
+                        label="时间">
+                    </el-table-column>
+                    <el-table-column 
+                        prop="mmsi"
+                        label="mmsi号"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="lon"
+                        label="经度">
+                    </el-table-column>
+                    <el-table-column
+                        prop="lat"
+                        label="纬度">
+                    </el-table-column>
+                    <el-table-column
+                        prop="navastaus"
+                        label="航行状态">
+                    </el-table-column>
+
+                </el-table>
+            </div>
+
         </div>
     </transition>
 
@@ -114,13 +145,22 @@ export default {
             // 折线属性
             trajectory: {
                 polylinePath: [],
-                data: {},
+                data: [],
             },
             // 标签属性
             label: {
                 content: 'test',
                 position: {lng: '112.368292', lat: '21.369393'}
             },
+            // 航线 点 marker属性
+            marker: {
+                markerInfo: {
+                    show: false
+                },
+                lnglat: [],
+            },
+            // 船舶详细信息，表格中使用
+            shipDetail: {},
             value1: '',
             color: 'yellow',
             show: false,
@@ -131,8 +171,6 @@ export default {
     methods:{
         getData(){
             let time = util.dateFormat(this.value1)
-            console.log(time)
-
             this.$axios.get('http://localhost:5000/api/get_data_by_inserttime/' + time).then(res => {
                 this.$message({
                     message: '获取数据成功',
@@ -143,20 +181,26 @@ export default {
             })
         },
         getDataByMMSI(){
-            console.log(this.trajectory.polylinePath)
+
             let mmsi = this.infoWindow.mmsi
             this.$axios.get('http://localhost:5000/api/get_data_by_mmsi/' + mmsi).then(res => {
                 // this.trajectory.polylinePath = null
-                this.trajectory.data = res.data
+                this.trajectory.data = res.data[0].detail
                 this.trajectory.polylinePath = res.data[0].lnglat
-                this.label.position = res.data[0].lnglat
+                this.marker.lnglat = res.data[0].lnglat
+                this.map.zoom = 8
+                console.log('船舶轨迹信息')
+                // console.log(this.trajectory.polylinePath)
+                console.log(res.data)
+                // console.log(this.trajectory.data[0].detail)
             })
         },
-        polylineEvent(e){
-            console.log('kaishi')
-            console.log(e.point)
+        getMarkerInfo(){
+            console.log(this.marker.markerInfo.show)
+            this.marker.markerInfo.show = true
         },
         clickPoint(e){
+            console.log(this.data[0].data)
             let lng = e.point.lng
             let lat = e.point.lat
             this.infoWindow.show = true

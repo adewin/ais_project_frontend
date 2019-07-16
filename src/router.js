@@ -4,6 +4,7 @@ import Test from './views/test.vue'
 import Cluster from './views/clusterAnalysis.vue'
 import Point from './views/pointAnalysis.vue'
 import Query from './views/basicQuery.vue'
+import Statistic from './views/statistic.vue'
 
 
 const router = new VueRouter({
@@ -12,7 +13,8 @@ const router = new VueRouter({
         { path: '/basic_query', component: Query },
         { path: '/option1', component: Option1},
         { path: '/test', component: Test},
-        { path: '/point_analysis', component: Point}
+        { path: '/point_analysis', component: Point},
+        { path: '/statistic', component: Statistic}
     ]
 })
 
