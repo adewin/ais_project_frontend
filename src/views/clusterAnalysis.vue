@@ -1,58 +1,58 @@
 <template>
 <div class="container">
-    <baidu-map class="map" 
-        :zoom="map.zoom" 
-        :min-zoom="map.min_zoom" :max-zoom="map.max_zoom" 
-        :scroll-wheel-zoom="map.scroll" center="大连"
-        @ready="setDistanceToolInstance"
-        @click="getPointByClick"
-        @rightclick="getPointByrightClick">
-        <bm-control class="bm-dis">
-            <button @click="openDistanceTool">开启测距</button>
-        </bm-control>
-        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+  <baidu-map class="map" 
+      :zoom="map.zoom" 
+      :min-zoom="map.min_zoom" :max-zoom="map.max_zoom" 
+      :scroll-wheel-zoom="map.scroll" center="大连"
+      @ready="setDistanceToolInstance"
+      @click="getPointByClick"
+      @rightclick="getPointByrightClick">
+      <bm-control class="bm-dis">
+          <button @click="openDistanceTool">开启测距</button>
+      </bm-control>
+      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
 
-        <bm-point-collection class="bm-points"
-            v-for="(item, index) in data1" :key="index"
-            :points="item.lnglat" shape="BMAP_POINT_SHAPE_CRICLE" :color="getColor(item.value)"
-            size="BMAP_POINT_SIZE_SMALL">
-        </bm-point-collection>
-        <!-- 海量点组件 -->
-        <bm-point-collection class="bm-clusters"
-            v-for="(item, index) in data2" :key="'ss'+index"
-            :points="item.lnglat" shape="BMAP_POINT_SHAPE_STAR" :color="getColor(item.value)"
-            size="BMAP_POINT_SIZE_SMALL"
-            @click="clickHandler">
-        </bm-point-collection>
+      <bm-point-collection class="bm-points"
+          v-for="(item, index) in data1" :key="index"
+          :points="item.lnglat" shape="BMAP_POINT_SHAPE_CRICLE" :color="getColor(item.value)"
+          size="BMAP_POINT_SIZE_SMALL">
+      </bm-point-collection>
+      <!-- 海量点组件 -->
+      <bm-point-collection class="bm-clusters"
+          v-for="(item, index) in data2" :key="'ss'+index"
+          :points="item.lnglat" shape="BMAP_POINT_SHAPE_STAR" :color="getColor(item.value)"
+          size="BMAP_POINT_SIZE_SMALL"
+          @click="clickHandler">
+      </bm-point-collection>
 
-    </baidu-map>
-    <transition name="el-zoom-in-top">
-        <div v-if="flag" class="operateContainer">
-            <el-collapse >
-                <el-collapse-item title="分析区域" name="1">
-                    左上：<el-input placeholder="左击地图获得" v-model="point1" clearable=""></el-input>
-                    右下：<el-input placeholder="右击地图获得" v-model="point2" clearable=""></el-input>
-                    <el-button @click="getDataByRectangle">获取数据</el-button>
-                    <el-button @click="clearData1">清除数据</el-button>
-                </el-collapse-item>
-                <el-collapse-item title="K-Dist图" name="2">
-                    <el-button>生成K-Dist图</el-button>
-                </el-collapse-item>
-                <el-collapse-item title="DBSCAN聚类" name="3">
-                    搜索半径（m）：<el-input placeholder="搜索半径" v-model="eps" clearable=""></el-input>
-                    <br>
-                    最小个数：<el-input placeholder="最小个数" v-model="minpts" clearable=""></el-input>
-                    <br>
-                    <el-button @click="getClusterValue">计算</el-button>
-                </el-collapse-item>
-            </el-collapse>
-            
-        </div>
-    </transition>
+  </baidu-map>
+  <transition name="el-zoom-in-top">
+      <div v-if="flag" class="operateContainer">
+          <el-collapse >
+              <el-collapse-item title="分析区域" name="1">
+                  左上：<el-input placeholder="左击地图获得" v-model="point1" clearable=""></el-input>
+                  右下：<el-input placeholder="右击地图获得" v-model="point2" clearable=""></el-input>
+                  <el-button @click="getDataByRectangle">获取数据</el-button>
+                  <el-button @click="clearData1">清除数据</el-button>
+              </el-collapse-item>
+              <el-collapse-item title="K-Dist图" name="2">
+                  <el-button>生成K-Dist图</el-button>
+              </el-collapse-item>
+              <el-collapse-item title="DBSCAN聚类" name="3">
+                  搜索半径（m）：<el-input placeholder="搜索半径" v-model="eps" clearable=""></el-input>
+                  <br>
+                  最小个数：<el-input placeholder="最小个数" v-model="minpts" clearable=""></el-input>
+                  <br>
+                  <el-button @click="getClusterValue">计算</el-button>
+              </el-collapse-item>
+          </el-collapse>
+          
+      </div>
+  </transition>
 
-    <div id="showIcon" @click="flag=!flag">
-        <i class="el-icon-circle-close"></i>
-    </div>
+  <div id="showIcon" @click="flag=!flag">
+      <i class="el-icon-circle-close"></i>
+  </div>
 </div>
 </template>
 
