@@ -5,13 +5,12 @@ import BasicQuery from '../views/basicQuery.vue'
 import Cluster from '../views/clusterAnalysis.vue'
 import PointAnalysis from '../views/pointAnalysis.vue'
 import DailyStatistic from '../views/dailyStatistic.vue'
-import Test from '../views/test.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/test', component: Test },
+    { path: '/', redirect: 'basic_query' },
     { path: '/basic_query', component: BasicQuery },
     { path: '/cluster_analysis', component: Cluster },
     { path: '/point_analysis', component: PointAnalysis },

@@ -3,7 +3,7 @@
   <el-container>
     <el-header>
       <el-row>
-        <el-col :span="8"><div class="grid-content bg-purple"> AIS数据分析系统</div></el-col>
+        <el-col :span="8"><div class="grid-content bg-purple">AIS数据分析系统</div></el-col>
         <!-- <el-col :span="4"><div class="grid-content bg-purple">导航一</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple-light">导航二</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple">导航三</div></el-col>
@@ -22,8 +22,8 @@
           text-color="#fff"
           active-text-color="#ffd04b">
           <el-menu-item index="1">
-              <i class="el-icon-setting"></i>
-              <span slot="title">首页</span>
+
+              <!-- <span slot="title"></span> -->
           </el-menu-item>
 
           <el-submenu index="2">
@@ -33,7 +33,7 @@
             </template>
             <el-menu-item-group>
               <router-link to="basic_query"><el-menu-item index="2-1">基础查询</el-menu-item></router-link>
-              <router-link to="statistic"><el-menu-item index="2-2">轨迹查询</el-menu-item></router-link> 
+              <!-- <router-link to="statistic"><el-menu-item index="2-2">轨迹查询</el-menu-item></router-link>  -->
             </el-menu-item-group>
           </el-submenu>
             <el-submenu index="3">
@@ -49,12 +49,12 @@
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
-                <i class="el-icon-document"></i>
+                <i class="el-icon-setting"></i>
                 <span>统计和可视化</span>
               </template>
               <el-menu-item-group>
                 <router-link to="/daily_statistic"><el-menu-item index="4-1">每日统计</el-menu-item></router-link>
-                <router-link to="/test"><el-menu-item index="4-2">地图测试2</el-menu-item></router-link>
+                <!-- <router-link to="/test"><el-menu-item index="4-2">地图测试2</el-menu-item></router-link> -->
               </el-menu-item-group>
             </el-submenu>
         </el-menu>
@@ -103,7 +103,12 @@ export default {
     height: 60px;
     margin: -60px 0 0;
   }
-
+  .grid-content.bg-purple {
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #545c64;
+  }
   .el-container.is-vertical {
     width: 100%;
     height: 100%;

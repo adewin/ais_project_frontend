@@ -28,7 +28,9 @@ export default {
     return {
       option1: {
         title: {
-          text: '每日船舶数量统计'
+          text: '每日船舶数量统计',
+          subtext: '仅以数据库中数据为准',
+
         },
         xAxis: {
           type: 'category',
@@ -43,44 +45,27 @@ export default {
           smooth: true
         }]
       },
-      option2: {},
+      option2: {
+        title: {
+          text: '每日船舶类型统计',
+          subtext: '仅以数据库中数据为准',
+          x:'center'
+        },
+        series: [{
+            data: [],
+            type: 'pie',
+            smooth: true
+        }],
+        legend: {
+          orient: 'vertical',
+          x: 'left',
+          data: []
+        }
+      },
       time_range: [new Date(2017, 7, 9, 16, 0), new Date(2017, 7, 10, 16, 10)]
     }
   },
   mounted() {
-    // this.orgOptions = {
-    //     xAxis: {
-    //         type: 'category',
-    //         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    //     },
-    //     yAxis: {
-    //         type: 'value'
-    //     },
-    //     series: [{
-    //         data: [820, 932, 901, 934, 1290, 1330, 1320],
-    //         type: 'line',
-    //         smooth: true
-    //     }]
-    // }
-    this.option2 = {
-      title: {
-        text: 'aaa',
-        subtext: '动态数据',
-        x:'center'
-      },
-      xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-          type: 'value'
-      },
-      series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'bar',
-          smooth: true
-      }]
-    }
   },
   methods: {
     getStat(){
@@ -90,9 +75,13 @@ export default {
         //   this.option1.series.data.push(el)
         // })
         Object.keys(res.data).forEach( key => {
-          console.log(key, res.data[key])
+          // console.log(key, res.data[key])
           this.option1.series[0].data.push(res.data[key])
         })
+      })
+      this.$axios.get('http://localhost:5000/api/get_shiptype/').then(res => {
+        console.log(res.data)
+        this.option2.series[0].data = res.data
       })
     }
   }
